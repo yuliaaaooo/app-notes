@@ -1,6 +1,6 @@
 import LoginForm from "../components/Form";
 import { Typography } from "antd";
-import ToggleRole from "../components/ToggleRole";
+
 import styled from "styled-components";
 const { Title } = Typography;
 
@@ -18,7 +18,7 @@ function Login() {
   return (
     <div>
       <StyledTitle>Course Management Assistant</StyledTitle>
-      <ToggleRole />
+
       <LoginForm />
     </div>
   );

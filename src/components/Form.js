@@ -1,6 +1,15 @@
 import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Row } from "antd";
+import styled from "styled-components";
+import { Radio } from "antd";
+
+export const StyledButton = styled(Button)`
+  &&& {
+    width: 100%;
+  }
+`;
+
 const App = () => {
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
@@ -16,6 +25,13 @@ const App = () => {
         }}
         onFinish={onFinish}
       >
+        <Form.Item>
+          <Radio.Group>
+            <Radio.Button value="Student">Student</Radio.Button>
+            <Radio.Button value="Teacher">Teacher</Radio.Button>
+            <Radio.Button value="Manager">Manager</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
         <Form.Item
           name="username"
           rules={[
@@ -65,14 +81,13 @@ const App = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button
-            style={{ width: 308 }}
+          <StyledButton
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
             Log in
-          </Button>
+          </StyledButton>
           Or <a href="">register now!</a>
         </Form.Item>
       </Form>
