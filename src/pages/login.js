@@ -18,7 +18,6 @@ function Login() {
   return (
     <div>
       <StyledTitle>Course Management Assistant</StyledTitle>
-
       <LoginForm />
     </div>
   );

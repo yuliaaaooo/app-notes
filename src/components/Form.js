@@ -4,15 +4,42 @@ import { Button, Checkbox, Form, Input, Row } from "antd";
 import styled from "styled-components";
 import { Radio } from "antd";
 
+const axios = require("axios");
+const { encrypt } = require("../utils/encrypt");
+
 export const StyledButton = styled(Button)`
   &&& {
     width: 100%;
   }
 `;
 
-const App = () => {
+const loginRequest = (values) => {
+  const { password, ...rest } = values;
+  const newParams = {
+    ...rest,
+    password: encrypt(password),
+  };
+  console.log("afterencrypt", newParams);
+  return axios.post("http://cms.chtoma.com/api/login", newParams);
+};
+
+// const [form] = Form.useForm();
+// const router = useRouter();
+const login = async (values) => {
+  const { data } = await loginRequest(values);
+  console.log("response", data);
+
+  if (!!data) {
+    console.log("success");
+    // storage.setUserInfo(data);
+    // router.push('dashboard');
+  }
+};
+
+const LoginForm = () => {
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
+    login(values);
   };
   return (
     <Row justify="center">
@@ -25,11 +52,19 @@ const App = () => {
         }}
         onFinish={onFinish}
       >
-        <Form.Item>
+        <Form.Item
+          name="role"
+          rules={[
+            {
+              required: true,
+              message: "Please select your role",
+            },
+          ]}
+        >
           <Radio.Group>
-            <Radio.Button value="Student">Student</Radio.Button>
-            <Radio.Button value="Teacher">Teacher</Radio.Button>
-            <Radio.Button value="Manager">Manager</Radio.Button>
+            <Radio.Button value="student">Student</Radio.Button>
+            <Radio.Button value="teacher">Teacher</Radio.Button>
+            <Radio.Button value="manager">Manager</Radio.Button>
           </Radio.Group>
         </Form.Item>
         <Form.Item
@@ -94,4 +129,4 @@ const App = () => {
     </Row>
   );
 };
-export default App;
+export default LoginForm;
