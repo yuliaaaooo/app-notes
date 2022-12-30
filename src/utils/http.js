@@ -1,6 +1,6 @@
 import axios from 'axios';
-const baseURL = 'http://cms.chtoma.com/api';
 import storage from './storage';
+const baseURL = 'http://cms.chtoma.com/api';
 const axiosInstance = axios.create({
     baseURL,
     withCredentials: true,

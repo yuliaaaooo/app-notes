@@ -3,9 +3,10 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Row } from "antd";
 import styled from "styled-components";
 import { Radio } from "antd";
-
-const axios = require("axios");
-const { encrypt } = require("../utils/encrypt");
+import http from '../utils/http';
+import {encrypt} from '../utils/encrypt';
+import storage from "../utils/storage";
+import { useNavigate } from "react-router-dom";
 
 export const StyledButton = styled(Button)`
   &&& {
@@ -13,14 +14,16 @@ export const StyledButton = styled(Button)`
   }
 `;
 
-const loginRequest = (values) => {
+const loginRequest = async (values) => {
   const { password, ...rest } = values;
   const newParams = {
     ...rest,
     password: encrypt(password),
   };
-  console.log("afterencrypt", newParams);
-  return axios.post("http://cms.chtoma.com/api/login", newParams);
+  //网络问题 为啥
+  return http
+    .post("login", newParams)
+    .then((res) => res.data);
 };
 
 // const [form] = Form.useForm();
@@ -28,18 +31,20 @@ const loginRequest = (values) => {
 const login = async (values) => {
   const { data } = await loginRequest(values);
   console.log("response", data);
-
-  if (!!data) {
-    console.log("success");
-    // storage.setUserInfo(data);
-    // router.push('dashboard');
-  }
+  return data;
 };
 
 const LoginForm = () => {
-  const onFinish = (values) => {
+
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
     console.log("Received values of form: ", values);
-    login(values);
+    const data = await login(values);
+    if (!!data) {
+      console.log("success");
+      storage.setUserInfo(data);
+      navigate('/home');
+    }
   };
   return (
     <Row justify="center">
@@ -52,15 +57,7 @@ const LoginForm = () => {
         }}
         onFinish={onFinish}
       >
-        <Form.Item
-          name="role"
-          rules={[
-            {
-              required: true,
-              message: "Please select your role",
-            },
-          ]}
-        >
+        <Form.Item name="role">
           <Radio.Group>
             <Radio.Button value="student">Student</Radio.Button>
             <Radio.Button value="teacher">Teacher</Radio.Button>
@@ -68,17 +65,17 @@ const LoginForm = () => {
           </Radio.Group>
         </Form.Item>
         <Form.Item
-          name="username"
+          name="email"
           rules={[
             {
               required: true,
-              message: "Please input your Username!",
+              message: "Please input your email!",
             },
           ]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
+            placeholder="email"
           />
         </Form.Item>
         <Form.Item
