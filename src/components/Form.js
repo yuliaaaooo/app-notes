@@ -3,8 +3,8 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Row } from "antd";
 import styled from "styled-components";
 import { Radio } from "antd";
-import http from '../utils/http';
-import {encrypt} from '../utils/encrypt';
+import http from "../utils/http";
+import { encrypt } from "../utils/encrypt";
 import storage from "../utils/storage";
 import { useNavigate } from "react-router-dom";
 
@@ -20,10 +20,7 @@ const loginRequest = async (values) => {
     ...rest,
     password: encrypt(password),
   };
-  //网络问题 为啥
-  return http
-    .post("login", newParams)
-    .then((res) => res.data);
+  return http.post("login", newParams).then((res) => res.data);
 };
 
 // const [form] = Form.useForm();
@@ -35,7 +32,6 @@ const login = async (values) => {
 };
 
 const LoginForm = () => {
-
   const navigate = useNavigate();
   const onFinish = async (values) => {
     console.log("Received values of form: ", values);
@@ -43,7 +39,7 @@ const LoginForm = () => {
     if (!!data) {
       console.log("success");
       storage.setUserInfo(data);
-      navigate('/home');
+      navigate("/home");
     }
   };
   return (

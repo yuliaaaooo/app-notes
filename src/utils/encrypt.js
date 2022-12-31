@@ -1,9 +1,14 @@
-const {AES} = require('crypto-js');
+const { AES } = require("crypto-js");
+// import { AES } from 'crypto-js';
 
-function encrypt(password){
-    return AES.encrypt(password, 'cms').toString()
+function encrypt(password) {
+  return AES.encrypt(password, "cms").toString();
 }
 
 module.exports = {
-    encrypt
-}
+  encrypt,
+};
+
+// export {
+//     encrypt
+// }
