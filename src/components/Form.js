@@ -39,7 +39,7 @@ const LoginForm = () => {
     if (!!data) {
       console.log("success");
       storage.setUserInfo(data);
-      navigate("/home");
+      navigate("/studentList");
     }
   };
   return (
