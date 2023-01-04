@@ -1,136 +1,215 @@
-import "./App.css";
-import {
-    AppstoreOutlined,
-    ContainerOutlined,
-    DesktopOutlined,
-    MailOutlined,
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    PieChartOutlined,
-    BellOutlined,
-    UserOutlined,
-    SmileOutlined
-} from '@ant-design/icons';
-import {Breadcrumb, Button, Dropdown, Menu} from 'antd';
-import React, { useState } from 'react';
+/*
+next部分
+2.
+import Link from 'next/link';
+
+*/
+
+//2----
+import React, { useState } from "react";
+import styled from "styled-components";
+//useNavigate是react-dom里的不是react里的，import from 错了，怪不得Thrown Error
+import { useNavigate } from "react-router-dom";
+//Can't resolve './utils/test/http 路径写错
 import http from "./utils/http";
+//是from 'lodash' 不是'/lodash'
 import lodash from "lodash";
 import storage from "./utils/storage";
-import {useNavigate} from "react-router-dom";
+import { HeaderIcon } from "./style";
+//------
+
+import {
+  AppstoreOutlined,
+  ContainerOutlined,
+  DesktopOutlined,
+  MailOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  PieChartOutlined,
+  BellOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { Layout, Menu, theme, Row, Dropdown, Breadcrumb } from "antd";
+import AppBreadcrumb from "./components/breadcrumb";
+//这行要在style（header）的前面
+const { Header, Sider, Content } = Layout;
+
+const Logo = styled.div`
+  height: 64px;
+  ${"" /*老师写法:width: 100%; display: inline-flex; vs 我：display: flex;*/}
+  ${"" /* 这个width：100% 帮助居中了诶，或者说侧面通过扩充盒子居中了 */}
+  ${
+    "" /* 为什么没有display: inline-flex字体大小就会变啊？？有inline-flex的时候字体正常 */
+    /* 而且flex和inline-flex—width效果一样 但是！！display:flex是添加在父项的，但这也是父项没错啊*/
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 24px;
+  color: #fff;
+  ${"" /* letter-space: 5px; */}
+  text-shadow: 5px 1px 5px;
+  transform: rotateX(45deg);
+  font-family: monospace;
+`;
+
+const StyledLayoutHeader = styled(Header)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  ${"" /* position: sticky; */}
+  ${"" /* top: 0; */}
+  ${"" /* z-index: 10; */}
+`;
 function getItem(label, key, icon, children, type) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-        type,
-    };
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  };
 }
+//2.0.2
 const items = [
-    getItem('Overview', '1', <PieChartOutlined />),
-    getItem('Student', 'sub1', <MailOutlined />, [
-        getItem('Student List', '5'),
-    ]),
-    getItem('Teacher', '2', <DesktopOutlined />),
-    getItem('Course', '3', <ContainerOutlined />),
-    getItem('Manage', 'sub2', <AppstoreOutlined />),
+  //key？？？
+  getItem("Overview", "1", <PieChartOutlined />),
+  getItem("Student", "sub1", <MailOutlined />, [getItem("Student List", "5")]),
+  getItem("Teacher", "2", <DesktopOutlined />),
+  getItem("Course", "3", <ContainerOutlined />),
+  getItem("Manage", "sub2", <AppstoreOutlined />),
 ];
-const userItems= (navigate) => [
-    {
-        key: '1',
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-               profile
-            </a>
-        ),
-    },
-    {
-        key: '4',
-        danger: true,
-        label: <span onClick={()=>{
-            http.post("logout").then((res)=>{
-                if(lodash.get(res,'data.data')){
-                    storage.setUserInfo(null);
-                    navigate("/login");
-                }
-            })
-        }}>logout</span>,
-    },
+//2.2 就是下拉菜单dropdown的第一个example,和2.1一起的
+//这里要加上useRole！=='manager'
+const userItems = (navigate) => [
+  {
+    key: "1",
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.antgroup.com"
+      >
+        profile
+      </a>
+    ),
+  },
+  {
+    key: "4",
+    danger: true,
+    label: (
+      <span
+        onClick={() => {
+          // http.post("login", newParams).then((res) => res.data)
+          //而下面这个是logout，不用传参数newParams
+          http.post("logout").then((res) => {
+            console.log("logout res", res);
+            if (lodash.get(res, "data.data")) {
+              storage.setUserInfo(null);
+              navigate("/login");
+            }
+          });
+        }}
+      >
+        logout
+      </span>
+    ),
+  },
 ];
-function Layout({children}) {
-    const [collapsed, setCollapsed] = useState(false);
-    const toggleCollapsed = () => {
-        setCollapsed(!collapsed);
-    };
-    const navigate = useNavigate();
-    return (
-        <div style={{display:'flex'}}>
-            <div
-                style={{
-                    flexBasis: 256,
+//2.2--------
+const App = ({ children }) => {
+  const [collapsed, setCollapsed] = useState(false);
+  //2.3本来很诧异，这都是在2.2下面是怎么调用到的
+  const navigate = useNavigate();
+  //2.3--------
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+  return (
+    //2.0 如何让Layout铺满整个：style={{ height: "100vh" }}
+    //代码是Antd 的Layout
+    <Layout style={{ height: "100vh" }}>
+      <Sider trigger={null} collapsible collapsed={collapsed}>
+        <Logo>
+          {/* 为啥这里用span元素？行内文字用span？ */}
+          <span style={{ color: "#fff", cursor: "pointer" }}>CMS</span>
+        </Logo>
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={["1"]}
+          defaultOpenKeys={["sub1"]}
+          //2.0.1这里把原代码的item数组提到最前面去了
+          items={items}
+        />
+      </Sider>
+      <Layout className="site-layout">
+        {/* 2.0.3 Antd原代码的Header,被答案换成了StyledLayoutHeader 但是好像StyledLayoutHeader的css不生效 我就还是用Header写吧*/}
+        {/* 2.0.3 这里像CMS答案里写color:#fff怎么就不行了 但是'#fff' 好像可以，tips：橙色是字符串*/}
+        {/* style={{ color: "#fff", zIndex: 2 }} */}
+        <StyledLayoutHeader style={{ color: "white" }}>
+          {/* 所以这块就是折叠的那个button吗 */}
+          <HeaderIcon>
+            {React.createElement(
+              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+              {
+                className: "trigger",
+                onClick: () => setCollapsed(!collapsed),
+              }
+            )}
+            {/* 所以这块就是折叠的那个button吗------*/}
+          </HeaderIcon>
+
+          {/* 这里用Row和用div都一样，反正display：flex会让他水平分布*/}
+          {/*不不不，用Row的话铃铛图标会挤到上面去，不知道为啥*/}
+          <div
+            style={{
+              color: "white",
+              width: 80,
+              fontSize: 16,
+            }}
+          >
+            {/* 1.不是用等于号font-size=18px 是冒号; 2.写法和./style文件里不一样,而且要加‘’*/}
+            <HeaderIcon>
+              <BellOutlined style={{ marginRight: "2em" }} />
+            </HeaderIcon>
+            {/* 2.1 页面最右边带下拉菜单的User图标 Antd Dropdown的代码，要搜Dropdown后找component overview*/}
+            {/* 就是下拉菜单dropdown的第一个example,和2.2一起的 */}
+            {/* items:userItems(navigate)这里本来是menu={{items,}}，冒号是可以这样用的？*/}
+            {/* (navigate)是因为里面要做跳转*/}
+            {/* Dropdown里加style={{ marginLeft: "5em" }}不管用，要在UserOuelined里加 */}
+            <HeaderIcon>
+              <Dropdown
+                menu={{
+                  items: userItems(navigate),
                 }}
-            >
+              >
+                <UserOutlined />
+              </Dropdown>
+              {/* 2.1 -------*/}
+            </HeaderIcon>
+          </div>
+        </StyledLayoutHeader>
+        <AppBreadcrumb />
 
-                <div style={{
-                    height: '50px',
-                    background: '#001529',
-                    color:'white',
-                    textAlign: 'center',
-                    lineHeight: '50px',
-                    textShadow: '3px 2px 11px',
-                    letterSpacing: '3px'}}>
-
-                    CMS
-                </div>
-                <Menu
-                    defaultSelectedKeys={['5']}
-                    defaultOpenKeys={['sub1']}
-                    mode="inline"
-                    theme="dark"
-                    inlineCollapsed={collapsed}
-                    items={items}
-                />
-            </div>
-            <div style={{flex:1,background: '#f2f2f2',height: '100vh', overflow: 'auto'}}>
-                <div style={{
-                    background:'#001529',
-                    lineHeight:'50px',
-                    height: 50,
-                    display:'flex',
-                    justifyContent:'space-between',
-
-                }}>
-                    <Button
-                        type="primary"
-                        onClick={toggleCollapsed}
-                        style={{
-                            margin: 8,
-                        }}
-                    >
-                        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                    </Button>
-                    <div style={{  color:'white',width: 80,fontSize: 16}}>
-                        <BellOutlined style={{marginRight: 16}}/>
-                        <Dropdown
-                            menu={{
-                                items:userItems(navigate),
-                            }}
-                        >
-                            <UserOutlined />
-                        </Dropdown>
-                    </div>
-                </div>
-                <Breadcrumb>
-                    <Breadcrumb.Item>CMS MANAGER SYSTEM</Breadcrumb.Item>
-                    <Breadcrumb.Item>
-                        <a href="">Student</a>
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item>Student List</Breadcrumb.Item>
-                </Breadcrumb>
-                {children}
-            </div>
-        </div>
-    );
-}
-
-export default Layout;
+        <Content
+          style={{
+            margin: "24px 16px",
+            padding: 24,
+            //为什么没有px，为什么不能width:100%,height: 100vh,
+            height: "100vh",
+            background: colorBgContainer,
+            //overflow这里注意！！
+            overflow: "auto",
+            flex: 1,
+          }}
+        >
+          {children}
+        </Content>
+      </Layout>
+    </Layout>
+    //2.0---------------
+  );
+};
+export default App;
