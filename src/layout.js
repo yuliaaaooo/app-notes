@@ -1,6 +1,6 @@
 /*
 next部分
-2.
+第二次
 import Link from 'next/link';
 
 */
@@ -120,7 +120,7 @@ const userItems = (navigate) => [
 //2.2--------
 const App = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
-  //2.3本来很诧异，这都是在2.2下面是怎么调用到的
+  //2.3本来很诧异，这都是在2.2下面是怎么调用到的,2.2只是声明啊，调用在2.3之后
   const navigate = useNavigate();
   //2.3--------
   const {

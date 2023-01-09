@@ -1,8 +1,9 @@
 import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Row } from "antd";
+import { Button, Checkbox, Form, Input, Row ,Col} from "antd";
 import styled from "styled-components";
 import { Radio } from "antd";
+//0.1.1使用axios实例 import http from "../utils/http";
 import http from "../utils/http";
 import { encrypt } from "../utils/encrypt";
 import storage from "../utils/storage";
@@ -28,16 +29,17 @@ const loginRequest = async (values) => {
 const login = async (values) => {
   const { data } = await loginRequest(values);
   console.log("response", data);
+      // storage {token: 'eyJ…', role: 'student', userId: 2}
   return data;
 };
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const onFinish = async (values) => {
-    console.log("Received values of form: ", values);
     const data = await login(values);
+    console.log("Received values of form: ", values);
     if (!!data) {
-      console.log("success");
+      console.log("success login");
       storage.setUserInfo(data);
       navigate("/studentList");
     }
