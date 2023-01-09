@@ -32,6 +32,9 @@ import {
 import { Layout, Menu, theme, Row, Dropdown, Breadcrumb } from "antd";
 import AppBreadcrumb from "./components/breadcrumb";
 //这行要在style（header）的前面
+
+import service from "./service";
+
 const { Header, Sider, Content } = Layout;
 
 const Logo = styled.div`
@@ -103,9 +106,16 @@ const userItems = (navigate) => [
         onClick={() => {
           // http.post("login", newParams).then((res) => res.data)
           //而下面这个是logout，不用传参数newParams
-          http.post("logout").then((res) => {
+          // http.post("logout").then((res) => {
+          //   console.log("logout res", res);
+          //   if (lodash.get(res, "data.data")) {
+          //     storage.setUserInfo(null);
+          //     navigate("/login");
+          //   }
+          // });
+          service.logout().then((res) => {
             console.log("logout res", res);
-            if (lodash.get(res, "data.data")) {
+            if (lodash.get(res, "data")) {
               storage.setUserInfo(null);
               navigate("/login");
             }

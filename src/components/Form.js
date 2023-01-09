@@ -1,6 +1,6 @@
 import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Row ,Col} from "antd";
+import { Button, Checkbox, Form, Input, Row, Col } from "antd";
 import styled from "styled-components";
 import { Radio } from "antd";
 //0.1.1使用axios实例 import http from "../utils/http";
@@ -8,6 +8,7 @@ import http from "../utils/http";
 import { encrypt } from "../utils/encrypt";
 import storage from "../utils/storage";
 import { useNavigate } from "react-router-dom";
+import service from "../service";
 
 export const StyledButton = styled(Button)`
   &&& {
@@ -16,12 +17,15 @@ export const StyledButton = styled(Button)`
 `;
 
 const loginRequest = async (values) => {
-  const { password, ...rest } = values;
-  const newParams = {
-    ...rest,
-    password: encrypt(password),
-  };
-  return http.post("login", newParams).then((res) => res.data);
+  // const { password, ...rest } = values;
+  // const newParams = {
+  //   ...rest,
+  //   password: encrypt(password),
+  // };
+  // return
+  // http.post("login", newParams).then((res) => res.data);
+
+  service.login(values);
 };
 
 // const [form] = Form.useForm();
@@ -29,7 +33,7 @@ const loginRequest = async (values) => {
 const login = async (values) => {
   const { data } = await loginRequest(values);
   console.log("response", data);
-      // storage {token: 'eyJ…', role: 'student', userId: 2}
+  // storage {token: 'eyJ…', role: 'student', userId: 2}
   return data;
 };
 

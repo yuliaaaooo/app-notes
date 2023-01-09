@@ -162,12 +162,17 @@ export default function StudentList() {
           </a>
           <a
             onClick={() => {
-              http.delete("/students/" + record.id).then((res) => {
-                if (lodash.get(res, "data.msg") === "success") {
-                  message.success("delete student success!");
+              service.deleteStudent(record.id).then((res) => {
+                if (lodash.get(res, "msg") === "success") {
                   getStudent();
                 }
               });
+              // http.delete("/students/" + record.id).then((res) => {
+              //   if (lodash.get(res, "data.msg") === "success") {
+              //     message.success("delete student success!");
+              //     getStudent();
+              //   }
+              // });
             }}
             hre
           >
@@ -202,19 +207,20 @@ export default function StudentList() {
       }
       //2.0get params里没body哈，post才可以通过body传
       setLoading(true);
-      const res = await http.get("students", { params });
+      const res = await service.getStudents(params);
+      // const res = await http.get("students", { params });
       setLoading(false);
 
       //拿到数据以后各种set
-      setList(lodash.get(res, "data.data.students", []));
+      setList(lodash.get(res, "data.students", []));
       //3.1.4 设置table的total总页数
 
       // 设置table的总页数
       if (tableInfo) {
-        tableInfo.pagination.total = lodash.get(res, "data.data.total");
+        tableInfo.pagination.total = lodash.get(res, "data.total");
         setTableParams(tableInfo);
       } else {
-        tableParams.pagination.total = lodash.get(res, "data.data.total");
+        tableParams.pagination.total = lodash.get(res, "data.total");
         setTableParams(tableParams);
       }
       //3. debug分析：为什么点击3 数据变了 但是页标签还是1（因为current没变） 因为点击的tableInfo传进来之后你要去更新tableParams啊
