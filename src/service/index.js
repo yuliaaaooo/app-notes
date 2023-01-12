@@ -37,7 +37,7 @@ class BaseApiService {
   errorHandler(err) {
     const msg = lodash.get(err, "response.data.msg", "unknown error");
     const code = lodash.get(err, "response.status", -1);
-
+    //???
     if (!err.response) {
       console.error(
         "%c [ err ]-149",
@@ -48,11 +48,14 @@ class BaseApiService {
 
     return { msg, code };
   }
+
   getPath(path) {
+    //Array.isArray() 用于确定传递的值是否是一个 Array。
     return !Array.isArray(path) ? String(path) : path.join("/");
   }
   async get(path, params) {
     path = this.getPath(path);
+    //?
     path = !!params
       ? `${path}?${Object.entries(params)
           .map(([key, value]) => `${key}=${value}`)
@@ -64,6 +67,7 @@ class BaseApiService {
       .then((res) => res.data)
       .catch((err) => this.errorHandler(err));
   }
+  //使用async定义方法,该方法会返回一个Promise对象，哪里体现是Promise对象了，没有（reject）什么的，.then就是Promise啊！！
   async post(path, params) {
     return axiosInstance
       .post(this.getPath(path), params)
@@ -127,6 +131,7 @@ class ApiService extends BaseApiService {
   addStudent(req) {
     return this.post([RootPath.students], req).then(this.showMessage(true));
   }
+  //为什么要加[]
   updateStudent(req) {
     return this.put([RootPath.students], req).then(this.showMessage(true));
   }

@@ -156,7 +156,6 @@ export default function StudentList() {
               }
               setIsModalOpen(true);
             }}
-            href
           >
             Edit
           </a>
@@ -174,7 +173,6 @@ export default function StudentList() {
               //   }
               // });
             }}
-            hre
           >
             Delete
           </a>

@@ -9,12 +9,24 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Layout from "./layout";
+import Overview from "./pages/overview";
+
 const HomeComponent = (
   <Layout>
     <Home />
   </Layout>
 );
-const studentListComponent = (
+const StudentListComponent = (
+  <Layout>
+    <StudentList />
+  </Layout>
+);
+const OverviewComponent = (
+  <Layout>
+    <Overview />
+  </Layout>
+);
+const TeacherComponent = (
   <Layout>
     <StudentList />
   </Layout>
@@ -24,7 +36,9 @@ const router = createBrowserRouter(
     <Route>
       <Route path="login" element={<Login />} />
       <Route path="home" element={HomeComponent} />
-      <Route path="studentList" element={studentListComponent} />
+      <Route path="studentList" element={StudentListComponent} />
+      <Route path="overview" element={OverviewComponent} />
+      <Route path="teacher" element={TeacherComponent} />
     </Route>
   )
 );

@@ -25,7 +25,7 @@ const loginRequest = async (values) => {
   // return
   // http.post("login", newParams).then((res) => res.data);
 
-  service.login(values);
+  return service.login(values);
 };
 
 // const [form] = Form.useForm();
