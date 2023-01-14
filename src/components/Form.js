@@ -45,7 +45,7 @@ const LoginForm = () => {
     if (!!data) {
       console.log("success login");
       storage.setUserInfo(data);
-      navigate("/studentList");
+      navigate("/Overview");
     }
   };
   return (

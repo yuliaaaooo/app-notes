@@ -77,10 +77,18 @@ function getItem(label, key, icon, children, type) {
 //2.0.2
 const items = [
   //key？？？
-  getItem("Overview", "1", <PieChartOutlined />),
-  getItem("Student", "sub1", <MailOutlined />, [getItem("Student List", "5")]),
-  getItem("Teacher", "2", <DesktopOutlined />),
-  getItem("Course", "3", <ContainerOutlined />),
+  getItem("Overview", "Overview", <PieChartOutlined />),
+  getItem("Student", "student", <MailOutlined />, [
+    getItem("Student List", "studentList"),
+  ]),
+  getItem("Teacher", "teacher", <DesktopOutlined />, [
+    getItem("Teacher List", "6"),
+  ]),
+  getItem("Course", "course", <ContainerOutlined />, [
+    getItem("All Course", "AllCourse"),
+    getItem("Add Course", "AddCourse"),
+    getItem("Edit Course", "EditCourse"),
+  ]),
   getItem("Manage", "sub2", <AppstoreOutlined />),
 ];
 //2.2 就是下拉菜单dropdown的第一个example,和2.1一起的
@@ -136,6 +144,14 @@ const App = ({ children }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  //4. 为了实现点击Sider跳转，antd里的menu里随便粘贴了onClick相关的部分
+  const [current, setCurrent] = useState("Overview");
+  //为啥这里e就能取到key了，所有onClick都这样吗
+  const onClick = (e) => {
+    console.log("click ", e);
+    setCurrent(e.key);
+    navigate("/" + e.key);
+  };
   return (
     //2.0 如何让Layout铺满整个：style={{ height: "100vh" }}
     //代码是Antd 的Layout
@@ -143,15 +159,23 @@ const App = ({ children }) => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <Logo>
           {/* 为啥这里用span元素？行内文字用span？ */}
-          <span style={{ color: "#fff", cursor: "pointer" }}>CMS</span>
+          <span
+            onClick={() => navigate("/")}
+            style={{ color: "#fff", cursor: "pointer" }}
+          >
+            CMS
+          </span>
         </Logo>
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={["Overview"]}
           defaultOpenKeys={["sub1"]}
           //2.0.1这里把原代码的item数组提到最前面去了
           items={items}
+          //4. 为了实现点击Sider跳转，antd里的menu里随便粘贴了onClick相关的部分
+          onClick={onClick}
+          selectedKeys={[current]}
         />
       </Sider>
       <Layout className="site-layout">
@@ -201,7 +225,7 @@ const App = ({ children }) => {
             </HeaderIcon>
           </div>
         </StyledLayoutHeader>
-        <AppBreadcrumb />
+        <AppBreadcrumb setCurrent={setCurrent} />
 
         <Content
           style={{
