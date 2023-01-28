@@ -128,6 +128,10 @@ class ApiService extends BaseApiService {
   getStudents(req) {
     return this.get(RootPath.students, req);
   }
+  //????
+  getStudentById(id) {
+    return this.get([RootPath.students, id]).then(this.showMessage());
+  }
   addStudent(req) {
     return this.post([RootPath.students], req).then(this.showMessage(true));
   }

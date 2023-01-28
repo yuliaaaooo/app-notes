@@ -1,7 +1,8 @@
 import "./App.css";
 import Login from "./pages/login";
 import Home from "./pages/home";
-import StudentList from "./pages/studentList";
+import StudentList from "./pages/dashboard/manager/student/studentList";
+import StudentDetail from "./pages/dashboard/manager/student/studentDetail";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -21,6 +22,12 @@ const StudentListComponent = (
     <StudentList />
   </Layout>
 );
+const StudentDetailComponent = (
+  <Layout>
+    <StudentDetail />
+  </Layout>
+);
+
 const OverviewComponent = (
   <Layout>
     <Overview />
@@ -37,6 +44,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="home" element={HomeComponent} />
       <Route path="studentList" element={StudentListComponent} />
+      <Route path="/studentList/:id" element={StudentDetailComponent} />
       <Route path="overview" element={OverviewComponent} />
       <Route path="teacher" element={TeacherComponent} />
     </Route>

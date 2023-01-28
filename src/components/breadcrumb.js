@@ -1,5 +1,6 @@
 import { Breadcrumb } from "antd";
 import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 
 const breadcrumbNameMap = {
   "/Overview": "Overview",
@@ -10,7 +11,9 @@ const breadcrumbNameMap = {
 };
 
 export default function AppBreadcrumb(props) {
-  const { setCurrent } = props;
+  // 这里思路不对，不应该直接点击面包屑后触发sider变化，而是面包屑>Url变化（useEffect）>sider变化
+  // const { setCurrent } = props;
+  // const [currentBreadcrumb, setcurrentBreadcrumb] = useState("Overview");
   //我们得有URL才行
   const location = useLocation();
   const pathSnippets = location.pathname.split("/").filter((i) => i);
@@ -22,8 +25,8 @@ export default function AppBreadcrumb(props) {
           to={url}
           //为什么我加的这个setCurrent不起效呢
           onClick={(e) => {
-            setCurrent(e.key);
             console.log("e.key", e.key);
+            // setcurrentBreadcrumb(e.key);
           }}
         >
           {breadcrumbNameMap[url]}

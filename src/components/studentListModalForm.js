@@ -1,12 +1,11 @@
 import React from "react";
-import http from "../utils/http";
+// import http from "../utils/http";
 import { Button, Checkbox, Form, Input, Select } from "antd";
-import lodash from "lodash";
+// import lodash from "lodash";
 import service from "../service";
 const studentListModalForm = (props) => {
   //3.2.3忘记写这一步了！！还有 =（props）
-  const { handleSaveSuccess, editRow } = props;
-
+  const { editRow, setLoading } = props;
   const onFinish = async (values) => {
     //？？为什么用let不用const，为什么要写null而不是{}
     let res = null;
@@ -15,9 +14,12 @@ const studentListModalForm = (props) => {
       //错误写法2：http.post('/students',{values}错了
       // res = await http.put("/students", values);
       res = await service.updateStudent(values);
+
+      setLoading(false);
     } else {
       // res = await http.post("/students", values);
       res = await service.addStudent(values);
+      setLoading(false);
     }
     //3.2.4 ❌：res.data.msg；如果success，就关闭Modal添加页面，所以要setIsModalOpen（从studentList文件传进来），也就是handleSvaesuccess函数
     // if (lodash.get(res, "data.msg") === "success") {
@@ -26,6 +28,7 @@ const studentListModalForm = (props) => {
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Modal Submit Failed:", errorInfo);
+    setLoading(false);
   };
 
   return (

@@ -9,7 +9,8 @@ import Link from 'next/link';
 import React, { useState } from "react";
 import styled from "styled-components";
 //useNavigate是react-dom里的不是react里的，import from 错了，怪不得Thrown Error
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 //Can't resolve './utils/test/http 路径写错
 import http from "./utils/http";
 //是from 'lodash' 不是'/lodash'
@@ -147,11 +148,17 @@ const App = ({ children }) => {
   //4. 为了实现点击Sider跳转，antd里的menu里随便粘贴了onClick相关的部分
   const [current, setCurrent] = useState("Overview");
   //为啥这里e就能取到key了，所有onClick都这样吗
-  const onClick = (e) => {
+  const handleClick = (e) => {
     console.log("click ", e);
     setCurrent(e.key);
     navigate("/" + e.key);
   };
+  //
+  const location = useLocation();
+  useEffect(() => {
+    const LastUrl = location.pathname.slice(1);
+    setCurrent(LastUrl);
+  }, [location.pathname]);
   return (
     //2.0 如何让Layout铺满整个：style={{ height: "100vh" }}
     //代码是Antd 的Layout
@@ -174,7 +181,7 @@ const App = ({ children }) => {
           //2.0.1这里把原代码的item数组提到最前面去了
           items={items}
           //4. 为了实现点击Sider跳转，antd里的menu里随便粘贴了onClick相关的部分
-          onClick={onClick}
+          onClick={handleClick}
           selectedKeys={[current]}
         />
       </Sider>
@@ -225,8 +232,8 @@ const App = ({ children }) => {
             </HeaderIcon>
           </div>
         </StyledLayoutHeader>
+        {/* 为什么这里加setCurrent没用 ？？*/}
         <AppBreadcrumb setCurrent={setCurrent} />
-
         <Content
           style={{
             margin: "24px 16px",
