@@ -2,7 +2,6 @@
 next部分
 第二次
 import Link from 'next/link';
-
 */
 
 //2----

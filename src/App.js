@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import Layout from "./layout";
 import Overview from "./pages/overview";
+import { ScrollMode } from "./pages/dashboard/manager/courses";
 
 const HomeComponent = (
   <Layout>
@@ -38,6 +39,12 @@ const TeacherComponent = (
     <StudentList />
   </Layout>
 );
+
+const ScrollModeComponent = (
+  <Layout>
+    <ScrollMode />
+  </Layout>
+);
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
@@ -47,6 +54,7 @@ const router = createBrowserRouter(
       <Route path="/studentList/:id" element={StudentDetailComponent} />
       <Route path="overview" element={OverviewComponent} />
       <Route path="teacher" element={TeacherComponent} />
+      <Route path="AllCourse" element={ScrollModeComponent} />
     </Route>
   )
 );
