@@ -1,12 +1,11 @@
+//???要好好研究一下
 import { HeartFilled, UserOutlined } from "@ant-design/icons";
 import { Card, Col, Row } from "antd";
-import { CardProps } from "antd/lib/card";
-// import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
-// import { gutter } from "../../lib/constant";
-// import { DurationUnit } from "../../lib/constant/duration";
-// import { Course } from "../../lib/model/course";
+import { Link } from "react-router-dom";
+import { gutter } from "../../lib/constant";
+import { DurationUnit } from "../../lib/constant";
 
 const StyledRow = styled(Row)`
   position: relative;
@@ -20,50 +19,47 @@ const StyledRow = styled(Row)`
   }
 `;
 
-// const getDuration = (data: Course): string => {
-//   const { duration, durationUnit } = data;
-//   const text = `${duration} ${DurationUnit[durationUnit]}`;
+const getDuration = (data) => {
+  const { duration, durationUnit } = data;
+  const text = `${duration} ${DurationUnit[durationUnit]}`;
 
-//   return duration > 1 ? text + "s" : text;
-// };
-
-export default function CourseOverview(
-  props: React.PropsWithChildren<Course> & { cardProps?: CardProps }
-) {
+  return duration > 1 ? text + "s" : text;
+};
+export default function CourseOverview(props) {
   return (
     <Card
       cover={<img src={props.cover} style={{ height: 260 }} />}
       {...props.cardProps}
     >
-      {/* gutter={gutter}  */}
-      <Row>
+      <Row gutter={gutter}>
         <h3>{props.name}</h3>
       </Row>
-      {/* gutter={gutter}  */}
-      <StyledRow justify="space-between" align="middle">
+
+      <StyledRow gutter={gutter} justify="space-between" align="middle">
         <Col>{props.startTime}</Col>
         <Col style={{ display: "flex", alignItems: "center" }}>
           <HeartFilled style={{ marginRight: 5, fontSize: 16, color: "red" }} />
           <b>{props.star}</b>
         </Col>
       </StyledRow>
-      {/* gutter={gutter}  */}
-      <StyledRow justify="space-between">
+
+      <StyledRow gutter={gutter} justify="space-between">
         <Col>Duration:</Col>
-        <Col>{/* <b>{getDuration(props)}</b> */}</Col>
-      </StyledRow>
-      {/* gutter={gutter} */}
-      <StyledRow justify="space-between">
-        <Col>Teacher:</Col>
-        <Col style={{ fontWeight: "bold" }}>
-          {props?.teacherName &&
-            {
-              /* <Link href="/dashboard/manager">{props.teacherName}</Link> */
-            }}
+        <Col>
+          <b>{getDuration(props)}</b>
         </Col>
       </StyledRow>
-      {/* //gutter={gutter} */}
-      <Row justify="space-between">
+
+      <StyledRow gutter={gutter} justify="space-between">
+        <Col>Teacher:</Col>
+        <Col style={{ fontWeight: "bold" }}>
+          {props?.teacherName && (
+            <Link to="/dashboard/manager">{props.teacherName}</Link>
+          )}
+        </Col>
+      </StyledRow>
+
+      <Row gutter={gutter} justify="space-between">
         <Col>
           <UserOutlined
             style={{ marginRight: 5, fontSize: 16, color: "#1890ff" }}

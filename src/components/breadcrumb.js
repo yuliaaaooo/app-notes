@@ -8,6 +8,8 @@ const breadcrumbNameMap = {
   "/teachers": "Teacher List",
   "/course": "All Course",
   "/message": "Message",
+  "/AddCourse": "Add-course",
+  "/AllCourse": "All-course",
 };
 
 export default function AppBreadcrumb(props) {

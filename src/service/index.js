@@ -142,6 +142,9 @@ class ApiService extends BaseApiService {
   deleteStudent(id) {
     return this.delete([RootPath.students, id]).then(this.showMessage(true));
   }
+  getCourses(req) {
+    return this.get(RootPath.courses, req).then(this.showMessage());
+  }
 }
 const service = new ApiService();
 export default service;

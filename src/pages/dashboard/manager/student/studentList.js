@@ -201,7 +201,7 @@ export default function StudentList() {
 
       if (query) {
         params.query = query;
-      } //else 是3.新加的，是为了保持saerch不被刷新？？
+      } //else 是3.新加的，是为了保持search不被刷新？？
       else {
         //3.4这里不懂？？？如果说没有传search value的话
         params.query = searchValue.current;

@@ -3,6 +3,7 @@ import Login from "./pages/login";
 import Home from "./pages/home";
 import StudentList from "./pages/dashboard/manager/student/studentList";
 import StudentDetail from "./pages/dashboard/manager/student/studentDetail";
+import AddCourse from "./pages/dashboard/manager/courses/add-courses.js";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -11,7 +12,7 @@ import {
 } from "react-router-dom";
 import Layout from "./layout";
 import Overview from "./pages/overview";
-import { ScrollMode } from "./pages/dashboard/manager/courses";
+import { ScrollMode } from "./pages/dashboard/manager/courses/all-course";
 
 const HomeComponent = (
   <Layout>
@@ -39,7 +40,11 @@ const TeacherComponent = (
     <StudentList />
   </Layout>
 );
-
+const AddCourseComponent = (
+  <Layout>
+    <AddCourse />
+  </Layout>
+);
 const ScrollModeComponent = (
   <Layout>
     <ScrollMode />
@@ -54,6 +59,7 @@ const router = createBrowserRouter(
       <Route path="/studentList/:id" element={StudentDetailComponent} />
       <Route path="overview" element={OverviewComponent} />
       <Route path="teacher" element={TeacherComponent} />
+      <Route path="AddCourse" element={AddCourseComponent} />
       <Route path="AllCourse" element={ScrollModeComponent} />
     </Route>
   )
