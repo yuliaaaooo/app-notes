@@ -1,6 +1,8 @@
 import { Button, message, Steps, theme } from "antd";
 import { useState } from "react";
 import AddCourseForm from "../../../../components/course/add-course";
+import AddCourseTwo from "../../../../components/course/add-course-two";
+import AddCourseThree from "../../../../components/course/add-course-three";
 //copy antd步骤条
 const steps = [
   {
@@ -9,16 +11,16 @@ const steps = [
   },
   {
     title: "Second",
-    content: "Second-content",
+    content: <AddCourseTwo/>,
   },
   {
     title: "Last",
-    content: "Last-content",
+    content: <AddCourseThree/>,
   },
 ];
 const AddCourse = () => {
   const { token } = theme.useToken();
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(1);
   const next = () => {
     setCurrent(current + 1);
   };
@@ -30,7 +32,7 @@ const AddCourse = () => {
     title: item.title,
   }));
   const contentStyle = {
-    lineHeight: "260px",
+    // lineHeight: "260px",
     textAlign: "center",
     color: token.colorTextTertiary,
     backgroundColor: token.colorFillAlter,

@@ -1,10 +1,16 @@
-import { Input, InputNumber, Select } from "antd";
-import React, { useState } from "react";
+import { Input, InputNumber, Select } from 'antd';
+import React, { useState } from 'react';
+
 
 /**
  * 自定义表单控件 带单位表的数值
  */
-const NumberWithUnit = ({ value = {}, onChange, options, defaultUnit }) => {
+const NumberWithUnit = ({
+  value = {},
+  onChange,
+  options,
+  defaultUnit,
+}) => {
   const [number, setNumber] = useState(value.number);
   const [unit, setUnit] = useState(value.unit || defaultUnit);
   const triggerChange = (changedValue) => {
@@ -17,27 +23,23 @@ const NumberWithUnit = ({ value = {}, onChange, options, defaultUnit }) => {
       return;
     }
 
-    if (!("number" in value)) {
+    if (!('number' in value)) {
       setNumber(newNumber);
     }
 
-    triggerChange({ number });
+    triggerChange({ number: newNumber });
   };
   const onUnitChange = (newUnit) => {
-    if (!("unit" in value)) {
+    if (!('unit' in value)) {
       setUnit(newUnit);
     }
 
-    triggerChange({ unit });
+    triggerChange({ unit: newUnit });
   };
 
   return (
-    <Input.Group compact style={{ display: "flex" }}>
-      <InputNumber
-        value={value.number || number}
-        onChange={onNumberChange}
-        style={{ flex: 1 }}
-      />
+    <Input.Group compact style={{ display: 'flex' }}>
+      <InputNumber value={value.number || number} onChange={onNumberChange} style={{ flex: 1 }} />
       <Select value={value.unit || unit} onChange={onUnitChange}>
         {options.map(({ label, unit }) => (
           <Select.Option value={unit} key={unit}>
@@ -49,4 +51,4 @@ const NumberWithUnit = ({ value = {}, onChange, options, defaultUnit }) => {
   );
 };
 
-export default NumberWithUnit;
+export default  NumberWithUnit;

@@ -22,13 +22,12 @@ const disabledDateTime = () => ({
   disabledSeconds: () => [55, 56],
 });
 
-const App = () => (
-  <Space direction="vertical" size={12}>
+const App = (props) => (
     <DatePicker
       format="YYYY-MM-DD "
       disabledDate={disabledDate}
       disabledTime={disabledDateTime}
+      {...props}
     />
-  </Space>
 );
 export default App;
